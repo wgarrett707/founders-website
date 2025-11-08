@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Founders</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 400;
+        }
+
+        .nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .nav a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .menu-icon {
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+        .menu-icon span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background-color: #ffffff;
+            margin: 4px 0;
+        }
+
+        .header-line {
+            height: 1px;
+            background-color: #333333;
+            margin: 0 40px;
+        }
+
+        .vertical-line {
+            position: absolute;
+            left: 0;
+            top: 80px;
+            bottom: 0;
+            width: 2px;
+            background-color: #9d4edd;
+            z-index: 10;
+        }
+
+        .left-content {
+            position: absolute;
+            left: 40px;
+            top: 100px;
+            z-index: 10;
+        }
+
+        .fellowship {
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: #cccccc;
+        }
+
+        .see-how {
+            position: absolute;
+            left: 40px;
+            bottom: 60px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: #cccccc;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            z-index: 10;
+        }
+
+        .right-content {
+            position: absolute;
+            right: 40px;
+            top: 100px;
+            z-index: 10;
+        }
+
+        .status {
+            font-size: 12px;
+            color: #cccccc;
+            margin-bottom: 40px;
+        }
+
+        .headline {
+            position: absolute;
+            right: 80px;
+            bottom: 120px;
+            text-align: right;
+            z-index: 10;
+        }
+
+        .headline-line1 {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .headline-line2 {
+            font-size: 36px;
+            font-style: italic;
+            margin-left: 20px;
+        }
+
+        .footer-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #333333;
+        }
+
+        .animation-container {
+            position: absolute;
+            left: 0;
+            top: 80px;
+            bottom: 0;
+            width: 70%;
+            max-width: 1200px;
+            min-height: 400px;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .animation-container canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            filter: blur(1px);
+            transform: translateZ(0);
+            will-change: transform;
+        }
+    </style>
+</head>
+<body>
+    <div class="vertical-line"></div>
+    
+    <div class="header">
+        <div class="logo">Founders</div>
+        <nav class="nav">
+            <a href="#">PORTFOLIO</a>
+            <a href="#">BUILD</a>
+            <a href="#">TEAM</a>
+            <a href="#">RESOURCES</a>
+            <a href="#">ABOUT</a>
+            <a href="#">JOBS</a>
+            <div class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </div>
+
+    <div class="header-line"></div>
+
+    <div class="left-content">
+        <div class="fellowship">[FELLOWSHIP]</div>
+    </div>
+
+    <div class="see-how">[SEE HOW]</div>
+
+    <div class="right-content">
+        <div class="status">• STATUS: CLOSED</div>
+    </div>
+
+    <div class="headline">
+        <div class="headline-line1">The world is broken.</div>
+        <div class="headline-line2">Let's fix it.</div>
+    </div>
+
+    <div class="footer-line"></div>
+
+    <div class="animation-container" id="animation-container"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        console.log('Script started');
+        
+        // Dynamically load Cannon.js and verify it loads
+        function loadCannon() {
+            return new Promise((resolve, reject) => {
+                // Try cdnjs.cloudflare.com first (often more reliable)
+                tryLoadCannon('https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.20.0/cannon.min.js', 1)
+                    .then(resolve)
+                    .catch(() => {
+                        // Try jsdelivr
+                        console.log('Trying Cannon.js from jsdelivr...');
+                        tryLoadCannon('https://cdn.jsdelivr.net/npm/cannon@0.20.0/build/cannon.min.js', 2)
+                            .then(resolve)
+                            .catch(() => {
+                                // Try unpkg
+                                console.log('Trying Cannon.js from unpkg...');
+                                tryLoadCannon('https://unpkg.com/cannon@0.20.0/build/cannon.min.js', 3)
+                                    .then(resolve)
+                                    .catch(() => {
+                                        // Try older version from cdnjs
+                                        console.log('Trying older Cannon.js version...');
+                                        tryLoadCannon('https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.17.1/cannon.min.js', 4)
+                                            .then(resolve)
+                                            .catch(() => {
+                                                reject(new Error('Failed to load Cannon.js from all CDNs - will use simple physics'));
+                                            });
+                                    });
+                            });
+                    });
+            });
+        }
+        
+        function tryLoadCannon(url, attemptNum) {
+            return new Promise((resolve, reject) => {
+                console.log(`Attempt ${attemptNum}: Loading Cannon.js from ${url}`);
+                const script = document.createElement('script');
+                script.src = url;
+                script.onload = function() {
+                    console.log(`Cannon.js script tag loaded from attempt ${attemptNum}`);
+                    // Wait a moment and check multiple times
+                    let checks = 0;
+                    const checkInterval = setInterval(() => {
+                        checks++;
+                        // Check all possible ways Cannon.js might expose itself
+                        let CANNON = window.CANNON || window.cannon || window.CANNONJS;
+                        
+                        // Also check if it's in window but named differently
+                        if (!CANNON) {
+                            for (let key in window) {
+                                if (window[key] && typeof window[key] === 'object' && window[key].World) {
+                                    CANNON = window[key];
+                                    console.log(`Found Cannon.js as window.${key}`);
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if (CANNON) {
+                            clearInterval(checkInterval);
+                            console.log(`Cannon.js found on attempt ${attemptNum}, checks: ${checks}`);
+                            console.log('CANNON object:', CANNON);
+                            console.log('CANNON.World:', typeof CANNON.World);
+                            resolve(CANNON);
+                        } else if (checks > 20) {
+                            clearInterval(checkInterval);
+                            console.error(`Cannon.js not found after ${checks} checks`);
+                            reject(new Error(`Cannon.js not found after loading from ${url}`));
+                        }
+                    }, 50);
+                };
+                script.onerror = function() {
+                    console.error(`Failed to load Cannon.js from ${url}`);
+                    reject(new Error(`Failed to load from ${url}`));
+                };
+                document.head.appendChild(script);
+            });
+        }
+        
+        // Wait for libraries to load
+        let animationInitialized = false;
+        let CANNON_LIB = null;
+        
+        // Load Cannon.js dynamically
+        loadCannon().then(function(cannonLib) {
+            console.log('Cannon.js successfully loaded:', cannonLib);
+            CANNON_LIB = cannonLib;
+            // Try to initialize once libraries are ready
+            if (typeof THREE !== 'undefined' && CANNON_LIB) {
+                console.log('All libraries ready, initializing with Cannon.js...');
+                setTimeout(initAnimation, 100);
+            }
+        }).catch(function(error) {
+            console.warn('Failed to load Cannon.js:', error);
+            console.log('Using simple physics simulation instead...');
+            CANNON_LIB = 'simple'; // Mark that we'll use simple physics
+            // Initialize with simple physics
+            if (typeof THREE !== 'undefined') {
+                console.log('Initializing with simple physics...');
+                setTimeout(initAnimation, 100);
+            }
+        });
+
+        function initSimplePhysics() {
+            if (animationInitialized) {
+                return;
+            }
+            
+            animationInitialized = true;
+            
+            try {
+                const container = document.getElementById('animation-container');
+                if (!container) {
+                    console.error('Animation container not found');
+                    return;
+                }
+
+                setTimeout(function() {
+                    const rect = container.getBoundingClientRect();
+                    const width = Math.max(rect.width, 800);
+                    const height = Math.max(rect.height, window.innerHeight - 80);
+
+                    if (width === 0 || height === 0) {
+                        console.error('Container has zero size');
+                        return;
+                    }
+
+                    const scene = new THREE.Scene();
+                    scene.background = null;
+
+                    const camera = new THREE.PerspectiveCamera(65, width / height, 0.1, 1000);
+                    camera.position.set(5, 7, 12); // Pulled back and up to see more horizontal area
+                    camera.lookAt(0, 2, 0);
+
+                    const renderer = new THREE.WebGLRenderer({ 
+                        alpha: true, 
+                        antialias: true,
+                        powerPreference: "high-performance"
+                    });
+                    
+                    renderer.setSize(width, height);
+                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                    container.appendChild(renderer.domElement);
+                    
+                    console.log('Simple physics animation initialized');
+
+                    // Create 30 orange balls
+                    const balls = [];
+                    const ballGeometry = new THREE.SphereGeometry(0.5, 16, 16);
+                    const ballMaterial = new THREE.MeshLambertMaterial({ 
+                        color: 0xff6600,
+                        flatShading: false
+                    });
+
+                    // Add lights
+                    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+                    scene.add(ambientLight);
+
+                    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+                    directionalLight.position.set(5, 10, 5);
+                    scene.add(directionalLight);
+
+                    // Ground plane (invisible, at y=0)
+                    const groundY = 0;
+                    const groundRestitution = 0.85; // More bounciness
+                    const groundFriction = 0.2; // Less friction for more movement
+
+                    // Create balls with simple physics
+                    for (let i = 0; i < 30; i++) {
+                        const mesh = new THREE.Mesh(ballGeometry, ballMaterial);
+                        mesh.castShadow = false;
+                        mesh.receiveShadow = false;
+                        scene.add(mesh);
+
+                        // Physics properties
+                        const ball = {
+                            mesh: mesh,
+                            position: new THREE.Vector3(
+                                (Math.random() - 0.5) * 12, // Wider horizontal spread
+                                8 + Math.random() * 6,
+                                (Math.random() - 0.5) * 12 // Wider depth spread
+                            ),
+                            velocity: new THREE.Vector3(
+                                (Math.random() - 0.5) * 0.8, // Slower initial velocity
+                                -0.3, // Slower initial fall
+                                (Math.random() - 0.5) * 0.8
+                            ),
+                            radius: 0.5,
+                            mass: 1,
+                            previousPositions: [] // For motion blur trail
+                        };
+                        
+                        mesh.position.copy(ball.position);
+                        balls.push(ball);
+                    }
+
+                    // Simple physics constants - slower motion
+                    const timeScale = 0.5; // Slow down overall motion
+                    const gravity = -9.82 * timeScale;
+                    const damping = 0.995; // Less air resistance for more movement
+                    const restitution = 0.85; // More bounciness
+                    const friction = 0.2; // Less friction
+
+                    // Animation loop
+                    let lastTime = performance.now();
+                    function animate() {
+                        requestAnimationFrame(animate);
+
+                        const time = performance.now();
+                        const delta = Math.min((time - lastTime) / 1000, 0.1);
+                        lastTime = time;
+
+                        // Update physics for each ball
+                        balls.forEach((ball, i) => {
+                            // Store previous position for motion blur effect
+                            ball.previousPositions.push(ball.position.clone());
+                            if (ball.previousPositions.length > 3) {
+                                ball.previousPositions.shift();
+                            }
+                            
+                            // Apply gravity (slower)
+                            ball.velocity.y += gravity * delta;
+                            
+                            // Apply damping (air resistance)
+                            ball.velocity.multiplyScalar(damping);
+                            
+                            // Update position (slower motion)
+                            const slowDelta = delta * timeScale;
+                            ball.position.add(ball.velocity.clone().multiplyScalar(slowDelta));
+                            
+                            // Ground collision
+                            if (ball.position.y - ball.radius <= groundY) {
+                                ball.position.y = groundY + ball.radius;
+                                ball.velocity.y *= -groundRestitution;
+                                
+                                // Apply friction
+                                ball.velocity.x *= (1 - groundFriction);
+                                ball.velocity.z *= (1 - groundFriction);
+                            }
+                            
+                            // Ball-to-ball collisions (realistic physics)
+                            for (let j = i + 1; j < balls.length; j++) {
+                                const other = balls[j];
+                                const dx = other.position.x - ball.position.x;
+                                const dy = other.position.y - ball.position.y;
+                                const dz = other.position.z - ball.position.z;
+                                const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                                const minDistance = ball.radius + other.radius;
+                                
+                                if (distance < minDistance && distance > 0.001) {
+                                    // Collision detected - calculate collision normal
+                                    const invDistance = 1 / distance;
+                                    const nx = dx * invDistance;
+                                    const ny = dy * invDistance;
+                                    const nz = dz * invDistance;
+                                    
+                                    // Separate balls to prevent overlap
+                                    const overlap = minDistance - distance;
+                                    const separation = overlap * 0.5;
+                                    ball.position.x -= nx * separation;
+                                    ball.position.y -= ny * separation;
+                                    ball.position.z -= nz * separation;
+                                    other.position.x += nx * separation;
+                                    other.position.y += ny * separation;
+                                    other.position.z += nz * separation;
+                                    
+                                    // Calculate relative velocity along collision normal
+                                    const dvx = other.velocity.x - ball.velocity.x;
+                                    const dvy = other.velocity.y - ball.velocity.y;
+                                    const dvz = other.velocity.z - ball.velocity.z;
+                                    const relativeSpeed = dvx * nx + dvy * ny + dvz * nz;
+                                    
+                                    // Only resolve if balls are moving towards each other
+                                    if (relativeSpeed > 0) {
+                                        // Realistic elastic collision with proper momentum conservation
+                                        // Based on conservation of momentum: m1*v1 + m2*v2 = m1*v1' + m2*v2'
+                                        // And conservation of energy (with restitution coefficient)
+                                        const totalMass = ball.mass + other.mass;
+                                        const impulse = 2 * relativeSpeed * restitution / totalMass;
+                                        
+                                        // Apply impulse to ball velocities (proper momentum transfer)
+                                        ball.velocity.x += impulse * other.mass * nx;
+                                        ball.velocity.y += impulse * other.mass * ny;
+                                        ball.velocity.z += impulse * other.mass * nz;
+                                        
+                                        other.velocity.x -= impulse * ball.mass * nx;
+                                        other.velocity.y -= impulse * ball.mass * ny;
+                                        other.velocity.z -= impulse * ball.mass * nz;
+                                    }
+                                }
+                            }
+                            
+                            // Reset ball if it falls too far (expanded horizontal range)
+                            if (ball.position.y < -10 || Math.abs(ball.position.x) > 20 || Math.abs(ball.position.z) > 20) {
+                                ball.position.set(
+                                    (Math.random() - 0.5) * 12, // Wider horizontal reset
+                                    12 + Math.random() * 4,
+                                    (Math.random() - 0.5) * 12 // Wider depth reset
+                                );
+                                ball.velocity.set(
+                                    (Math.random() - 0.5) * 0.8, // Slower reset velocity
+                                    -0.3,
+                                    (Math.random() - 0.5) * 0.8
+                                );
+                                ball.previousPositions = [];
+                            }
+                            
+                            // Update mesh position
+                            ball.mesh.position.copy(ball.position);
+                        });
+
+                        renderer.render(scene, camera);
+                    }
+
+                    // Handle window resize
+                    function handleResize() {
+                        const rect = container.getBoundingClientRect();
+                        const width = Math.max(rect.width, 800);
+                        const height = Math.max(rect.height, window.innerHeight - 80);
+                        camera.aspect = width / height;
+                        camera.updateProjectionMatrix();
+                        renderer.setSize(width, height);
+                    }
+                    window.addEventListener('resize', handleResize);
+
+                    // Start animation
+                    animate();
+                }, 200);
+            } catch (error) {
+                console.error('Error initializing simple physics:', error);
+                animationInitialized = false;
+            }
+        }
+
+        function initAnimation() {
+            if (animationInitialized) {
+                console.log('Animation already initialized');
+                return;
+            }
+            
+            // Check if libraries loaded
+            if (typeof THREE === 'undefined') {
+                console.error('THREE.js not available');
+                return;
+            }
+            
+            // Check if we should use simple physics
+            const useSimplePhysics = !CANNON_LIB || CANNON_LIB === 'simple';
+            
+            if (useSimplePhysics) {
+                console.log('Initializing with simple physics simulation');
+                initSimplePhysics();
+                return;
+            }
+            
+            console.log('Initializing animation with Cannon.js:', CANNON_LIB);
+
+            try {
+                const container = document.getElementById('animation-container');
+                if (!container) {
+                    console.error('Animation container not found');
+                    animationInitialized = false;
+                    return;
+                }
+
+                // Wait for container to be properly sized
+                setTimeout(function() {
+                    animationInitialized = true;
+                    const rect = container.getBoundingClientRect();
+                    const width = Math.max(rect.width, 400);
+                    const height = Math.max(rect.height, window.innerHeight - 80);
+
+                    if (width === 0 || height === 0) {
+                        console.error('Container has zero size', width, height);
+                        return;
+                    }
+
+                    const scene = new THREE.Scene();
+                    scene.background = null;
+
+                    // Camera positioned to see the falling balls
+                    const camera = new THREE.PerspectiveCamera(65, width / height, 0.1, 1000);
+                    camera.position.set(5, 7, 12); // Pulled back and up to see more horizontal area
+                    camera.lookAt(0, 2, 0);
+
+                    const renderer = new THREE.WebGLRenderer({ 
+                        alpha: true, 
+                        antialias: true,
+                        powerPreference: "high-performance"
+                    });
+                    
+                    if (!renderer.domElement) {
+                        console.error('Failed to create WebGL renderer');
+                        return;
+                    }
+                    
+                    renderer.setSize(width, height);
+                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                    container.appendChild(renderer.domElement);
+                    
+                    console.log('Animation initialized', { width, height, container: container.offsetWidth, containerHeight: container.offsetHeight });
+
+                    // Initialize Cannon.js physics world - slower motion
+                    const world = new CANNON_LIB.World();
+                    const timeScale = 0.5; // Slow down motion
+                    world.gravity.set(0, -9.82 * timeScale, 0);
+                    world.broadphase = new CANNON_LIB.NaiveBroadphase();
+                    world.solver.iterations = 10;
+
+                    // Create ball material (shared)
+                    const ballPhysicsMaterial = new CANNON_LIB.Material('ball');
+                    ballPhysicsMaterial.restitution = 0.85; // More bounciness
+                    ballPhysicsMaterial.friction = 0.2; // Less friction
+
+                    // Create ground material
+                    const groundMaterial = new CANNON_LIB.Material('ground');
+
+                    // Create invisible ground plane at y=0
+                    const groundShape = new CANNON_LIB.Plane();
+                    const groundBody = new CANNON_LIB.Body({ mass: 0 });
+                    groundBody.addShape(groundShape);
+                    groundBody.quaternion.setFromAxisAngle(new CANNON_LIB.Vec3(1, 0, 0), -Math.PI / 2);
+                    groundBody.position.set(0, 0, 0);
+                    groundBody.material = groundMaterial;
+                    world.add(groundBody);
+
+                    // Create contact material for ground-ball interactions
+                    const groundContactMaterial = new CANNON_LIB.ContactMaterial(groundMaterial, ballPhysicsMaterial, {
+                        friction: 0.2,
+                        restitution: 0.85 // More bounciness
+                    });
+                    world.addContactMaterial(groundContactMaterial);
+
+                    // Create 30 orange balls
+                    const balls = [];
+                    const ballGeometry = new THREE.SphereGeometry(0.5, 16, 16);
+                    const ballMaterial = new THREE.MeshLambertMaterial({ 
+                        color: 0xff6600,
+                        flatShading: false
+                    });
+
+                    // Add lights
+                    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+                    scene.add(ambientLight);
+
+                    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+                    directionalLight.position.set(5, 10, 5);
+                    scene.add(directionalLight);
+
+                    // Create balls with physics
+                    for (let i = 0; i < 30; i++) {
+                        const mesh = new THREE.Mesh(ballGeometry, ballMaterial);
+                        mesh.castShadow = false;
+                        mesh.receiveShadow = false;
+                        scene.add(mesh);
+
+                        const shape = new CANNON_LIB.Sphere(0.5);
+                        const body = new CANNON_LIB.Body({ mass: 1 });
+                        body.addShape(shape);
+                        body.material = ballPhysicsMaterial;
+                        
+                        // Start balls in a wider visible area (expanded horizontally)
+                        body.position.set(
+                            (Math.random() - 0.5) * 12, // Wider horizontal spread
+                            8 + Math.random() * 6,
+                            (Math.random() - 0.5) * 12 // Wider depth spread
+                        );
+                        
+                        // Slower initial velocity
+                        body.velocity.set(
+                            (Math.random() - 0.5) * 0.8,
+                            -0.3,
+                            (Math.random() - 0.5) * 0.8
+                        );
+
+                        world.add(body);
+                        balls.push({ mesh, body });
+                    }
+
+                    // Animation loop
+                    let lastTime = performance.now();
+                    function animate() {
+                        requestAnimationFrame(animate);
+
+                        const time = performance.now();
+                        const delta = Math.min((time - lastTime) / 1000, 0.1);
+                        lastTime = time;
+
+                        // Slow down physics simulation
+                        world.step(delta * timeScale);
+
+                        // Reset balls that fall too far or go off screen (expanded horizontal range)
+                        balls.forEach(ball => {
+                            const pos = ball.body.position;
+                            // If ball falls below -10 or goes too far horizontally, reset it
+                            if (pos.y < -10 || Math.abs(pos.x) > 20 || Math.abs(pos.z) > 20) {
+                                ball.body.position.set(
+                                    (Math.random() - 0.5) * 12, // Wider horizontal reset
+                                    12 + Math.random() * 4,
+                                    (Math.random() - 0.5) * 12 // Wider depth reset
+                                );
+                                ball.body.velocity.set(
+                                    (Math.random() - 0.5) * 0.8, // Slower reset velocity
+                                    -0.3,
+                                    (Math.random() - 0.5) * 0.8
+                                );
+                            }
+                            ball.mesh.position.copy(ball.body.position);
+                            ball.mesh.quaternion.copy(ball.body.quaternion);
+                        });
+
+                        renderer.render(scene, camera);
+                    }
+
+                    // Handle window resize
+                    function handleResize() {
+                        const rect = container.getBoundingClientRect();
+                        const width = Math.max(rect.width, 800);
+                        const height = Math.max(rect.height, window.innerHeight - 80);
+                        camera.aspect = width / height;
+                        camera.updateProjectionMatrix();
+                        renderer.setSize(width, height);
+                    }
+                    window.addEventListener('resize', handleResize);
+
+                    // Start animation
+                    animate();
+                }, 200);
+            } catch (error) {
+                console.error('Error initializing animation:', error);
+                animationInitialized = false;
+            }
+        }
+
+        // Wait for DOM to be ready, then check if we can initialize
+        function checkAndInit() {
+            if (typeof THREE !== 'undefined' && CANNON_LIB && !animationInitialized) {
+                console.log('All libraries ready, initializing animation');
+                setTimeout(initAnimation, 100);
+            }
+        }
+        
+        console.log('Document ready state:', document.readyState);
+        
+        // Check periodically if libraries become available
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('DOMContentLoaded fired');
+                checkAndInit();
+            });
+        } else {
+            checkAndInit();
+        }
+
+        // Also check on window load
+        window.addEventListener('load', function() {
+            console.log('Window load fired');
+            checkAndInit();
+        });
+        
+        // Periodic check as fallback
+        setInterval(checkAndInit, 500);
+    </script>
+</body>
+</html>
+
