@@ -719,8 +719,28 @@ function initWordSphere() {
         return;
     }
 
-    sphereInitialized = true;
-    console.log('Initializing word sphere');
+    // Wait for Montserrat font to load before rendering text on canvas
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+            sphereInitialized = true;
+            console.log('Fonts loaded, initializing word sphere');
+            createWordSphere();
+        });
+    } else {
+        // Fallback if fonts API not available
+        setTimeout(() => {
+            sphereInitialized = true;
+            console.log('Initializing word sphere (font loading fallback)');
+            createWordSphere();
+        }, 500);
+    }
+}
+
+function createWordSphere() {
+    const container = document.getElementById('sphere-container');
+    if (!container) {
+        return;
+    }
 
     // Majors represented in Founders - showing diversity
     const words = [
@@ -785,14 +805,15 @@ function initWordSphere() {
         
         // Dynamic canvas size based on text width
         const fontSize = 32;
-        wordContext.font = `bold ${fontSize}px Arial`;
+        // Use Montserrat font for sphere text
+        wordContext.font = `bold ${fontSize}px Montserrat, Arial, sans-serif`;
         const textWidth = wordContext.measureText(word).width;
         wordCanvas.width = Math.max(textWidth + 40, 256);
         wordCanvas.height = 64;
 
-        // Redraw text with proper sizing
+        // Redraw text with proper sizing and Montserrat font
         wordContext.fillStyle = '#ffffff';
-        wordContext.font = `bold ${fontSize}px Arial`;
+        wordContext.font = `bold ${fontSize}px Montserrat, Arial, sans-serif`;
         wordContext.textAlign = 'center';
         wordContext.textBaseline = 'middle';
         wordContext.fillText(word, wordCanvas.width / 2, wordCanvas.height / 2);
@@ -943,12 +964,27 @@ function initWordSphere() {
     animate();
 }
 
-// Initialize sphere when Three.js is ready
+// Load Montserrat font for canvas rendering
+function loadMontserratFont() {
+    const font = new FontFace('Montserrat', 'url(public/fonts/Montserrat-VariableFont_wght.ttf)');
+    return font.load().then(() => {
+        document.fonts.add(font);
+        console.log('Montserrat font loaded');
+    }).catch(err => {
+        console.warn('Failed to load Montserrat font:', err);
+    });
+}
+
+// Initialize sphere when Three.js is ready and font is loaded
 if (typeof THREE !== 'undefined') {
-    setTimeout(initWordSphere, 500);
+    loadMontserratFont().then(() => {
+        setTimeout(initWordSphere, 100);
+    });
 } else {
     window.addEventListener('load', () => {
-        setTimeout(initWordSphere, 500);
+        loadMontserratFont().then(() => {
+            setTimeout(initWordSphere, 100);
+        });
     });
 }
 
@@ -972,4 +1008,64 @@ window.addEventListener('load', function() {
 
 // Periodic check as fallback
 setInterval(checkAndInit, 500);
+
+// Initialize sponsors scroller for seamless loop
+function initSponsorsScroller() {
+    const track = document.getElementById('sponsors-track');
+    if (!track) {
+        return;
+    }
+
+    // Clone all sponsor logos to create seamless loop
+    const logos = track.querySelectorAll('.sponsor-logo');
+    logos.forEach(logo => {
+        const clone = logo.cloneNode(true);
+        track.appendChild(clone);
+    });
+}
+
+// Scroll indicator functionality
+function initScrollIndicator() {
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        scrollIndicator.addEventListener('click', function() {
+            const sphereSection = document.querySelector('.sphere-section');
+            if (sphereSection) {
+                sphereSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+}
+
+// Vertical line scroll progress
+function initScrollProgress() {
+    const progressBar = document.getElementById('vertical-line-progress');
+    if (!progressBar) {
+        return;
+    }
+    
+    function updateScrollProgress() {
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = window.scrollY;
+        const progress = Math.max(0, Math.min(1, 1 - (scrolled / scrollHeight)));
+        
+        progressBar.style.transform = `scaleY(${progress})`;
+    }
+    
+    window.addEventListener('scroll', updateScrollProgress);
+    updateScrollProgress(); // Initial update
+}
+
+// Initialize sponsors scroller when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+        initSponsorsScroller();
+        initScrollIndicator();
+        initScrollProgress();
+    });
+} else {
+    initSponsorsScroller();
+    initScrollIndicator();
+    initScrollProgress();
+}
 

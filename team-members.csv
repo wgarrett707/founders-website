@@ -1,0 +1,50 @@
+name,team,photo,role,group_photo
+Vaanathi Chonachalam,exec,public/members/vaanathi.jpg,President,public/members/exec_group.jpg
+Will Garrett,exec,public/members/will.jpg,Vice President,
+Prineet Parhar,exec,public/members/prineet.jpg,Treasurer,
+Raahil Parikh,exec,public/members/raahil.jpg,Head of Events,
+Surya Chhabra,exec,public/members/surya.jpg,Head of Exploration,
+Lena Li,exec,public/members/lena.jpg,Head of Community,
+Varun Madhan,exec,public/members/varun.jpg,Head of R&D,
+Zoe Hanson,exec,public/members/zoe_h.jpeg,Social Chair,
+
+Raahil Parikh,events,public/members/raahil.jpg,Head of Events,public/members/events_group.jpg
+Aayan Verma,events,public/members/aayan.jpg,Member,
+Aditya Rangi,events,public/members/aditya.jpg,Member,
+Zuyu Liu,events,public/members/zuyu.jpg,Member,
+Neha Panyala,events,public/members/neha.jpg,Member,
+Siddhu Bhumpelli,events,public/members/siddhu.jpg,Member,
+Sri Balaji,events,public/members/sri.jpeg,Member,
+Prisha Khona,events,public/members/prisha.jpeg,Member,
+Jimmy Shivak,events,public/members/jimmy.jpg,Member,
+Zoe Zhang,events,public/members/zoe.jpg,Member,
+
+Surya Chhabra,exploration,public/members/surya.jpg,Head of Exploration,public/members/exploration_group.jpg
+Cole Phillips,exploration,public/members/cole.jpg,Member,
+Arjun Marwah,exploration,public/members/arjun.jpg,Member,
+Dev Sharma,exploration,public/members/dev.jpeg,Member,
+Sai Dorasani,exploration,public/members/sai.jpeg,Member,
+Pranav Adya,exploration,na,Member,
+
+Lena Li,community,public/members/lena.jpg,Head of Community,public/members/community_group.jpg
+Jocelyn Sung,community,public/members/jocelyn.jpg,Member,
+Jiya Soni,community,public/members/jiya.jpeg,Member,
+Medha Vemparala,community,public/members/medha.jpeg,Member,
+Aastha Parikh,community,na,Member,
+Veer Patel,community,na,Member,
+Alex Zhang,community,na,Member,
+
+Varun Madhan,rd,public/members/varun.jpg,Head of R&D,public/members/rd_group.jpg,public/members/rd_group.jpg
+Kavya Sachdeva,rd,public/members/kavya.jpg,Project Lead,
+Ojas Shah,rd,public/members/ojas.jpeg,Project Lead,
+Rishi Mulchandani,rd,public/members/rishi.jpg,Project Lead,
+Nalin Kundu,rd,public/members/nalin.jpg,Member,
+Dilan Choksi,rd,public/members/dilan.jpg,Member,
+Antigoni Garbis,rd,public/members/antigoni.jpg,Member,
+Anika Taneja,rd,public/members/anika.jpg,Member,
+Sriya Burra,rd,public/members/sriya.jpg,Member,
+Rushil Yavasani,rd,public/members/rushil.jpg,Member,
+Shrishant Hattarki,rd,public/members/shrishant.jpg,Member,
+Renee George,rd,public/members/renee.jpg,Member,
+Kushal Trivedi,rd,public/members/kushal.jpg,Member,
+Amey Gupta,rd,public/members/amey.jpg,Member,

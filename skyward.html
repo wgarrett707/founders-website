@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyward - Founders</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="vertical-line">
+        <div class="vertical-line-progress" id="vertical-line-progress"></div>
+    </div>
+    
+    <div class="header">
+        <div class="logo"><a href="index.html">Founders</a></div>
+        <nav class="nav">
+            <a href="#">EVENTS</a>
+            <a href="teams.html">TEAMS</a>
+            <a href="skyward.html" class="active">SKYWARD</a>
+            <a href="podcast.html">PODCAST</a>
+            <div class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </div>
+
+    <div class="header-line"></div>
+
+    <div class="skyward-container">
+        <div class="skyward-breadcrumb fade-in-up">[SKYWARD]</div>
+        <div class="skyward-heading fade-in-up">
+            <span class="skyward-heading-main">Skyward</span>
+        </div>
+        <div class="header-line skyward-header-line"></div>
+
+        <p class="skyward-description fade-in-up">
+            Skyward is our curated series highlighting standout founders, companies, and ideas from our community.
+            Explore each volume below.
+        </p>
+
+        <div class="skyward-list fade-in-up">
+            <a href="#" class="skyward-item fade-in">
+                <span class="skyward-item-title">SKYWARD #1</span>
+                <span class="skyward-item-cta" aria-hidden="true">
+                    <svg class="skyward-arrow" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M10 8L14 12L10 16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            </a>
+            <a href="#" class="skyward-item fade-in">
+                <span class="skyward-item-title">SKYWARD #2</span>
+                <span class="skyward-item-cta" aria-hidden="true">
+                    <svg class="skyward-arrow" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M10 8L14 12L10 16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            </a>
+            <a href="#" class="skyward-item fade-in">
+                <span class="skyward-item-title">SKYWARD #3</span>
+                <span class="skyward-item-cta" aria-hidden="true">
+                    <svg class="skyward-arrow" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M10 8L14 12L10 16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            </a>
+            <a href="#" class="skyward-item fade-in">
+                <span class="skyward-item-title">SKYWARD #4</span>
+                <span class="skyward-item-cta" aria-hidden="true">
+                    <svg class="skyward-arrow" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M10 8L14 12L10 16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Vertical line scroll progress
+        const progressBar = document.getElementById('vertical-line-progress');
+        if (progressBar) {
+            function updateScrollProgress() {
+                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = window.scrollY;
+                const progress = Math.max(0, Math.min(1, 1 - (scrolled / scrollHeight)));
+                progressBar.style.transform = `scaleY(${progress})`;
+            }
+            window.addEventListener('scroll', updateScrollProgress);
+            updateScrollProgress();
+        }
+
+        // Skyward page entrance animations - appear once on load (no scroll logic)
+        (function initSkywardAnimations() {
+            const breadcrumb = document.querySelector('.skyward-breadcrumb');
+            const heading = document.querySelector('.skyward-heading');
+            const description = document.querySelector('.skyward-description');
+            const list = document.querySelector('.skyward-list');
+            const items = Array.from(document.querySelectorAll('.skyward-item'));
+
+            const sequence = [];
+            if (breadcrumb) sequence.push({ el: breadcrumb, delay: 0 });
+            if (heading) sequence.push({ el: heading, delay: 120 });
+            if (description) sequence.push({ el: description, delay: 240 });
+            if (list) sequence.push({ el: list, delay: 360 });
+            items.forEach((item, idx) => sequence.push({ el: item, delay: 480 + idx * 120 }));
+
+            // Ensure the browser registers the initial state, then add 'visible' with a stagger
+            requestAnimationFrame(() => {
+                sequence.forEach(({ el, delay }) => {
+                    setTimeout(() => el.classList.add('visible'), delay);
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
+
+

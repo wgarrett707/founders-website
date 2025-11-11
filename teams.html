@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams - Founders</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="vertical-line">
+        <div class="vertical-line-progress" id="vertical-line-progress"></div>
+    </div>
+    
+    <div class="header">
+        <div class="logo"><a href="index.html">Founders</a></div>
+        <nav class="nav">
+            <a href="#">EVENTS</a>
+            <a href="teams.html" class="active">TEAMS</a>
+            <a href="skyward.html">SKYWARD</a>
+            <a href="podcast.html">PODCAST</a>
+            <div class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </div>
+
+    <div class="header-line"></div>
+
+    <div class="teams-container">
+        <div class="teams-breadcrumb">[FOUNDERS TEAM]</div>
+        
+        <div class="teams-heading">
+            <span class="teams-heading-main">Our Teams</span>
+        </div>
+        
+        <div class="header-line teams-header-line"></div>
+        
+        <div class="teams-filters">
+            <a href="#" class="team-filter active" data-team="exec">EXEC</a>
+            <a href="#" class="team-filter" data-team="events">EVENTS</a>
+            <a href="#" class="team-filter" data-team="exploration">EXPLORATION</a>
+            <a href="#" class="team-filter" data-team="community">COMMUNITY</a>
+            <a href="#" class="team-filter" data-team="rd">R&D</a>
+        </div>
+        
+        <div class="header-line teams-header-line"></div>
+        
+        <div class="teams-group-photo">
+            <div class="group-photo-placeholder">
+                <span>Group Photo</span>
+            </div>
+        </div>
+        
+        <div class="team-blurb-section">
+            <div class="header-line teams-header-line"></div>
+            <div class="team-blurb" id="team-blurb">
+                <p>The Executive Team leads Founders and oversees all strategic initiatives, operations, and organizational direction.</p>
+            </div>
+            <div class="header-line teams-header-line"></div>
+        </div>
+        
+        <div class="teams-grid" id="teams-grid">
+            <!-- Team members will be loaded dynamically from CSV -->
+        </div>
+    </div>
+
+    <script src="teams.js"></script>
+</body>
+</html>
+
