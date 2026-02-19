@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge 2026 - Founders</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="vertical-line">
+        <div class="vertical-line-progress" id="vertical-line-progress"></div>
+    </div>
+    
+    <div class="header">
+        <div class="logo"><a href="index.html">Founders</a></div>
+        <nav class="nav">
+            <a href="forge.html" class="active">FORGE</a>
+            <a href="teams.html">TEAMS</a>
+            <a href="skyward.html">SKYWARD</a>
+            <a href="podcast.html">PODCAST</a>
+            <a href="about.html">ABOUT</a>
+            <div class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </div>
+
+    <div class="header-line"></div>
+
+    <div class="skyward-container">
+        <div class="skyward-breadcrumb fade-in-up">[FORGE]</div>
+        <div class="skyward-heading fade-in-up">
+            <span class="skyward-heading-main">Forge 2026</span>
+        </div>
+        <div class="header-line skyward-header-line"></div>
+
+        <div class="forge-date-location fade-in-up">
+            <p>March 28-29 | Chicago</p>
+        </div>
+
+        <div class="forge-apply-button fade-in-up">
+            <a href="#" class="forge-apply-link">APPLY HERE</a>
+        </div>
+
+        <p class="skyward-description fade-in-up">
+            Forge is the Midwest's largest student-run startup weekend! Connect with VCs, entrepreneurs, and top student startups, pitch for prizes, attend workshops, and refine your ideas!
+        </p>
+
+        <!-- 2025 Winners Section -->
+        <div class="forge-section fade-in-up">
+            <h2 class="forge-section-title">FORGE 2025 WINNERS</h2>
+            
+            <div class="forge-winners">
+                <div class="forge-winner-item">
+                    <h3 class="forge-winner-place">1st Place</h3>
+                    <h4 class="forge-winner-name">InstaEnglish</h4>
+                    <p class="forge-winner-description">
+                        InstaEnglish is your personal English-speaking coach in your pocket. We help English learners reach conversational fluency in just 10 months — no fluff, just smart cramming. Since launching in Japan in 2024, we've broken into the top 50 educational apps on the Apple App Store. Powered by a multilingual team fluent in 7 languages, we're now gearing up for global expansion to capture a share of the $340B language learning market.
+                    </p>
+                </div>
+
+                <div class="forge-winner-item">
+                    <h3 class="forge-winner-place">2nd Place</h3>
+                    <h4 class="forge-winner-name">LaneTrax</h4>
+                    <p class="forge-winner-description">
+                        Bowling analytics is broken—less than 5% of alleys have tracking systems. LaneTrax removes this barrier by turning any phone into a tracking device so every bowler can analyze, improve, and dominate.
+                    </p>
+                </div>
+
+                <div class="forge-winner-item">
+                    <h3 class="forge-winner-place">3rd Place</h3>
+                    <h4 class="forge-winner-name">VeriGuard</h4>
+                    <p class="forge-winner-description">
+                        VeriGuard is an AI-powered platform that helps media and PR teams detect deepfakes in real time—protecting brands from misinformation, fraud, and reputational harm.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Speakers, Mentors & Judges Section -->
+        <div class="forge-section fade-in-up">
+            <h2 class="forge-section-title">FORGE 2025 SPEAKERS, MENTORS & JUDGES</h2>
+            
+            <div class="forge-people">
+                <div class="forge-people-category">
+                    <h3 class="forge-category-title">Keynote Speaker:</h3>
+                    <ul class="forge-people-list">
+                        <li>Priya Shah, The Simple Good</li>
+                        <li>Abin Kuriakose, World Business Chicago</li>
+                        <li>Bob Okabe, Discovery Partners Institute</li>
+                    </ul>
+                </div>
+
+                <div class="forge-people-category">
+                    <h3 class="forge-category-title">Judges:</h3>
+                    <ul class="forge-people-list">
+                        <li>Nick Arnett, 1517</li>
+                        <li>Lynette Correa-Velez, HACE</li>
+                        <li>Ilan Pragaspathy, TDS</li>
+                        <li>Catrina Patton, Rise8</li>
+                        <li>Nadia Vedhapudi, Culligan ZeroWater</li>
+                        <li>Liz Yuhas, Chicago Blend</li>
+                        <li>Brittany Canty, Inciteful</li>
+                    </ul>
+                </div>
+
+                <div class="forge-people-category">
+                    <h3 class="forge-category-title">Mentors:</h3>
+                    <ul class="forge-people-list">
+                        <li>Advay Gupta, PathLit AI</li>
+                        <li>Joshua Love, Zite AI</li>
+                        <li>Alex Kosyakov, Natrion, 30u30</li>
+                        <li>Nick Militello, Omnipher</li>
+                        <li>Eric Mills, BlackInk AI</li>
+                        <li>Marshall Budin, Pharus</li>
+                        <li>Jake Marmulstein, Janover Connect</li>
+                        <li>Josh Jay James, Other.OOO</li>
+                        <li>Peter Pellizzari, Threadable</li>
+                        <li>Catrina Patton, Women in Product</li>
+                        <li>Nadia Vedhapudi, Culligan ZeroWater</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vertical line scroll progress
+        const progressBar = document.getElementById('vertical-line-progress');
+        if (progressBar) {
+            function updateScrollProgress() {
+                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = window.scrollY;
+                const progress = Math.max(0, Math.min(1, 1 - (scrolled / scrollHeight)));
+                progressBar.style.transform = `scaleY(${progress})`;
+            }
+            window.addEventListener('scroll', updateScrollProgress);
+            updateScrollProgress();
+        }
+
+        // Forge page entrance animations - appear once on load
+        (function initForgeAnimations() {
+            const breadcrumb = document.querySelector('.skyward-breadcrumb');
+            const heading = document.querySelector('.skyward-heading');
+            const dateLocation = document.querySelector('.forge-date-location');
+            const applyButton = document.querySelector('.forge-apply-button');
+            const description = document.querySelector('.skyward-description');
+            const sections = Array.from(document.querySelectorAll('.forge-section'));
+
+            const sequence = [];
+            if (breadcrumb) sequence.push({ el: breadcrumb, delay: 0 });
+            if (heading) sequence.push({ el: heading, delay: 120 });
+            if (dateLocation) sequence.push({ el: dateLocation, delay: 240 });
+            if (applyButton) sequence.push({ el: applyButton, delay: 360 });
+            if (description) sequence.push({ el: description, delay: 480 });
+            sections.forEach((section, idx) => sequence.push({ el: section, delay: 600 + idx * 120 }));
+
+            requestAnimationFrame(() => {
+                sequence.forEach(({ el, delay }) => {
+                    setTimeout(() => el.classList.add('visible'), delay);
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
+

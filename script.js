@@ -80,28 +80,30 @@ function tryLoadCannon(url, attemptNum) {
 let animationInitialized = false;
 let CANNON_LIB = null;
 
-// Load Cannon.js dynamically
-loadCannon().then(function(cannonLib) {
-    console.log('Cannon.js successfully loaded:', cannonLib);
-    CANNON_LIB = cannonLib;
-    // Try to initialize once libraries are ready
-    if (typeof THREE !== 'undefined' && CANNON_LIB) {
-        console.log('All libraries ready, initializing with Cannon.js...');
-        setTimeout(initAnimation, 100);
-    }
-}).catch(function(error) {
-    console.warn('Failed to load Cannon.js:', error);
-    console.log('Using simple physics simulation instead...');
-    CANNON_LIB = 'simple'; // Mark that we'll use simple physics
-    // Initialize with simple physics
-    if (typeof THREE !== 'undefined') {
-        console.log('Initializing with simple physics...');
-        setTimeout(initAnimation, 100);
-    }
-});
+// Skip Cannon.js loading - use simple physics directly for faster startup
+CANNON_LIB = 'simple'; // Mark that we'll use simple physics
+// Initialize with simple physics directly
+if (typeof THREE !== 'undefined') {
+    console.log('Initializing with simple physics...');
+    setTimeout(initAnimation, 100);
+} else {
+    // Wait for THREE.js to load
+    window.addEventListener('load', function() {
+        if (typeof THREE !== 'undefined') {
+            console.log('Initializing with simple physics...');
+            setTimeout(initAnimation, 100);
+        }
+    });
+}
 
 function initSimplePhysics() {
     if (animationInitialized) {
+        return;
+    }
+    
+    // Skip animation on mobile devices
+    if (window.innerWidth <= 768) {
+        console.log('Skipping cube animation on mobile device');
         return;
     }
     
@@ -162,7 +164,7 @@ function initSimplePhysics() {
             scene.add(directionalLight);
 
             // Spawning parameters
-            const spawnHeight = 15; // Spawn cubes at the top
+            const spawnHeight = 12; // Spawn cubes at the top
             const despawnHeight = -15; // Despawn cubes below this
             const maxCubes = 75; // Maximum number of cubes on screen (1.5x increase)
             const spawnRate = 0.167; // Spawn interval in seconds (1.5x faster spawn rate)
@@ -220,7 +222,10 @@ function initSimplePhysics() {
                 cubes.push(cube);
             }
 
-            // No initial cubes - they will spawn continuously from the start
+            // Pre-spawn a few cubes immediately so they're visible right away
+            for (let i = 0; i < 5; i++) {
+                createCube();
+            }
 
             // Simple physics constants - slower motion
             const timeScale = 0.5; // Slow down overall motion
@@ -410,6 +415,12 @@ function initSimplePhysics() {
 function initAnimation() {
     if (animationInitialized) {
         console.log('Animation already initialized');
+        return;
+    }
+    
+    // Skip animation on mobile devices
+    if (window.innerWidth <= 768) {
+        console.log('Skipping cube animation on mobile device');
         return;
     }
     
@@ -1037,6 +1048,19 @@ function initScrollIndicator() {
     }
 }
 
+// Mobile scroll arrow functionality
+function initMobileScrollArrow() {
+    const mobileScrollArrow = document.querySelector('.mobile-scroll-arrow');
+    if (mobileScrollArrow) {
+        mobileScrollArrow.addEventListener('click', function() {
+            const sphereSection = document.querySelector('.sphere-section');
+            if (sphereSection) {
+                sphereSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+}
+
 // Vertical line scroll progress
 function initScrollProgress() {
     const progressBar = document.getElementById('vertical-line-progress');
@@ -1056,16 +1080,197 @@ function initScrollProgress() {
     updateScrollProgress(); // Initial update
 }
 
+// Animate counting up for statistics
+function animateStatCounter(element, target, suffix = '', duration = 1000) {
+    const start = 0;
+    const increment = target / (duration / 16); // 60fps
+    let current = start;
+    
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            current = target;
+            clearInterval(timer);
+        }
+        
+        // Format number with suffix
+        element.textContent = Math.floor(current).toLocaleString() + suffix;
+    }, 16); // ~60fps
+}
+
+// Initialize sphere carousel
+function initSphereCarousel() {
+    const track = document.getElementById('sphere-carousel-track');
+    const dots = document.querySelectorAll('.sphere-carousel-dot');
+    const statNumbers = document.querySelectorAll('.stat-number');
+    
+    if (!track || dots.length === 0) {
+        return;
+    }
+    
+    let currentSlide = 0;
+    const totalSlides = 2;
+    let hasAnimated = false; // Track if statistics have been animated
+    
+    function resetStatistics() {
+        statNumbers.forEach((statElement) => {
+            const suffix = statElement.getAttribute('data-suffix') || '';
+            statElement.textContent = '0' + suffix;
+        });
+        hasAnimated = false;
+    }
+    
+    function animateStatistics() {
+        if (hasAnimated) return; // Don't animate if already animated
+        
+        statNumbers.forEach((statElement) => {
+            const target = parseInt(statElement.getAttribute('data-target'));
+            const suffix = statElement.getAttribute('data-suffix') || '';
+            if (target) {
+                statElement.textContent = '0' + suffix;
+                animateStatCounter(statElement, target, suffix, 1000);
+            }
+        });
+        hasAnimated = true;
+    }
+    
+    function goToSlide(slideIndex) {
+        if (slideIndex < 0 || slideIndex >= totalSlides) {
+            return;
+        }
+        
+        currentSlide = slideIndex;
+        const translateX = -slideIndex * 50; // 50% per slide
+        track.style.transform = `translateX(${translateX}%)`;
+        
+        // Update active dot
+        dots.forEach((dot, index) => {
+            if (index === slideIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+        
+        // Animate statistics when switching to slide 2
+        if (slideIndex === 1) {
+            // Reset and animate
+            resetStatistics();
+            setTimeout(() => {
+                animateStatistics();
+            }, 100); // Small delay to ensure slide transition has started
+        } else {
+            // Only reset the animation flag when leaving slide 2
+            // Don't reset the numbers visually - let them stay at their final values
+            hasAnimated = false;
+        }
+    }
+    
+    // Add click handlers to dots
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            goToSlide(index);
+        });
+    });
+}
+
+// Initialize photo carousels
+function initPhotoCarousels() {
+    const socialSections = document.querySelectorAll('.social-section');
+    
+    socialSections.forEach((section) => {
+        const photoStack = section.querySelector('.photo-stack');
+        const dots = section.querySelectorAll('.photo-dot');
+        const photos = section.querySelectorAll('.photo-item');
+        
+        if (!photoStack || dots.length === 0 || photos.length === 0) {
+            return;
+        }
+        
+        let currentPhoto = 0;
+        const totalPhotos = 5;
+        
+        function updatePhotoStack(activeIndex) {
+            photos.forEach((photo, index) => {
+                // Remove all position classes
+                photo.classList.remove('active', 'behind-1', 'behind-2', 'behind-3', 'behind-4');
+                
+                if (index === activeIndex) {
+                    photo.classList.add('active');
+                } else {
+                    // Calculate position relative to active photo
+                    let position = index - activeIndex;
+                    if (position < 0) position += totalPhotos;
+                    
+                    if (position === 1) {
+                        photo.classList.add('behind-1');
+                    } else if (position === 2) {
+                        photo.classList.add('behind-2');
+                    } else if (position === 3) {
+                        photo.classList.add('behind-3');
+                    } else if (position === 4) {
+                        photo.classList.add('behind-4');
+                    }
+                }
+            });
+        }
+        
+        function goToPhoto(photoIndex) {
+            if (photoIndex < 0 || photoIndex >= totalPhotos) {
+                return;
+            }
+            
+            currentPhoto = photoIndex;
+            
+            // Update photo stack positions
+            updatePhotoStack(photoIndex);
+            
+            // Update active dot
+            dots.forEach((dot, index) => {
+                if (index === photoIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        
+        // Add click handlers to dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                goToPhoto(index);
+            });
+        });
+        
+        // Add click handlers to photos for navigation
+        photos.forEach((photo, index) => {
+            photo.addEventListener('click', () => {
+                const nextIndex = (index + 1) % totalPhotos;
+                goToPhoto(nextIndex);
+            });
+        });
+        
+        // Initialize the first photo as active
+        updatePhotoStack(0);
+    });
+}
+
 // Initialize sponsors scroller when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
         initSponsorsScroller();
         initScrollIndicator();
         initScrollProgress();
+        initMobileScrollArrow();
+        initSphereCarousel();
+        initPhotoCarousels();
     });
 } else {
     initSponsorsScroller();
     initScrollIndicator();
     initScrollProgress();
+    initMobileScrollArrow();
+    initSphereCarousel();
+    initPhotoCarousels();
 }
 

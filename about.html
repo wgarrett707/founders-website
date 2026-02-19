@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Founders</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="vertical-line">
+        <div class="vertical-line-progress" id="vertical-line-progress"></div>
+    </div>
+    
+    <div class="header">
+        <div class="logo"><a href="index.html">Founders</a></div>
+        <nav class="nav">
+            <a href="forge.html">FORGE</a>
+            <a href="teams.html">TEAMS</a>
+            <a href="skyward.html">SKYWARD</a>
+            <a href="podcast.html">PODCAST</a>
+            <a href="about.html" class="active">ABOUT</a>
+            <div class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </div>
+
+    <div class="header-line"></div>
+
+    <div class="skyward-container">
+        <div class="skyward-breadcrumb fade-in-up">[ABOUT]</div>
+        <div class="skyward-heading fade-in-up">
+            <span class="skyward-heading-main">About</span>
+        </div>
+        <div class="header-line skyward-header-line"></div>
+
+        <p class="skyward-description fade-in-up">
+            Founders is Illinois' premier student entrepreneurship organization. We bring together ambitious students from every major, every year, and every background to build, learn, and grow together. Through regular events, workshops, networking sessions, and mentorship opportunities, we provide the resources and community support needed to help student entrepreneurs turn their ideas into reality. Whether you're just starting to explore entrepreneurship or you're already building your next venture, Founders is here to support your journey at every step of the entrepreneurial process.
+        </p>
+    </div>
+
+    <script>
+        // Vertical line scroll progress
+        const progressBar = document.getElementById('vertical-line-progress');
+        if (progressBar) {
+            function updateScrollProgress() {
+                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = window.scrollY;
+                const progress = Math.max(0, Math.min(1, 1 - (scrolled / scrollHeight)));
+                progressBar.style.transform = `scaleY(${progress})`;
+            }
+            window.addEventListener('scroll', updateScrollProgress);
+            updateScrollProgress();
+        }
+
+        // About page entrance animations - appear once on load
+        (function initAboutAnimations() {
+            const breadcrumb = document.querySelector('.skyward-breadcrumb');
+            const heading = document.querySelector('.skyward-heading');
+            const description = document.querySelector('.skyward-description');
+
+            const sequence = [];
+            if (breadcrumb) sequence.push({ el: breadcrumb, delay: 0 });
+            if (heading) sequence.push({ el: heading, delay: 120 });
+            if (description) sequence.push({ el: description, delay: 240 });
+
+            requestAnimationFrame(() => {
+                sequence.forEach(({ el, delay }) => {
+                    setTimeout(() => el.classList.add('visible'), delay);
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
+
